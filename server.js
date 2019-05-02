@@ -2,12 +2,12 @@
 //==========================================
 // require("dotenv").config();
 var express = require("express");
-var routes =require("./routes");
+var routes = require("./routes");
 var app = express();
 const db = require("./models");
 const mongoose = require("mongoose");
 
-var PORT = process.env.PORT || 3000;
+var PORT = process.env.PORT || 3001;
 
 var http = require("http").Server(app);
 // var io = require("socket.io")(http);
@@ -44,7 +44,7 @@ if (process.env.NODE_ENV === "production") {
 mongoose.connect(
     process.env.MOONGODB_URI || "mongodb://localhost/lifegame",
     {
-        useCreateIndex:true,
+        useCreateIndex: true,
         useNewUrlParser: true,
     }
 )
@@ -52,5 +52,5 @@ mongoose.connect(
 //START THE SERVER
 //=================================
 http.listen(PORT, function () {
-  console.log('listening on localhost:', PORT);
+    console.log('listening on localhost:', PORT);
 });
