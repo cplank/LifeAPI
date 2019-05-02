@@ -1,1 +1,8 @@
+<<<<<<< HEAD
 node_modules
+=======
+.DS_Store
+node_modules
+npm-debug.log
+.env
+>>>>>>> a9f7c36441fcc393117de9d0e3a7c5376fb800a6

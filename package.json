@@ -1,17 +1,27 @@
 {
+<<<<<<< HEAD
   "name": "LifeAPI",
+=======
+  "name": "lifeapi",
+>>>>>>> a9f7c36441fcc393117de9d0e3a7c5376fb800a6
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
+<<<<<<< HEAD
     "start": "node server.js",
+=======
+>>>>>>> a9f7c36441fcc393117de9d0e3a7c5376fb800a6
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cplank/LifeAPI.git"
   },
+<<<<<<< HEAD
   "keywords": [],
+=======
+>>>>>>> a9f7c36441fcc393117de9d0e3a7c5376fb800a6
   "author": "",
   "license": "ISC",
   "bugs": {
@@ -20,6 +30,10 @@
   "homepage": "https://github.com/cplank/LifeAPI#readme",
   "dependencies": {
     "express": "^4.16.4",
+<<<<<<< HEAD
     "mongoose": "^5.5.5"
+=======
+    "socket.io": "^2.2.0"
+>>>>>>> a9f7c36441fcc393117de9d0e3a7c5376fb800a6
   }
 }

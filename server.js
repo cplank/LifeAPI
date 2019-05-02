@@ -1,10 +1,11 @@
 //Dependencies
 //==========================================
-require("dotenv").config();
+// require("dotenv").config();
 var express = require("express");
 var routes =require("./routes");
 var app = express();
-
+const db = require("./models");
+const mongoose = require("mongoose");
 
 var PORT = process.env.PORT || 3000;
 
@@ -19,10 +20,10 @@ app.use(express.static("public"));
 
 app.use(routes);
 
-app.get('/', function(req, res) {
-    
-    res.sendfile('index.html');
-});
+//Will we need this when we deploy - if in this is where to serve files from
+if (process.env.NODE_ENV === "production") {
+    app.use(express.static("client/build"))
+}
 
 // If running a test, set syncOptions.force to true
 // clearing the `testdb`
@@ -50,6 +51,6 @@ mongoose.connect(
 
 //START THE SERVER
 //=================================
-http.listen(PORT, function() {
+http.listen(PORT, function () {
   console.log('listening on localhost:', PORT);
 });
