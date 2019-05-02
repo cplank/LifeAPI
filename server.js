@@ -42,7 +42,7 @@ if (process.env.NODE_ENV === "production") {
 //MONGOOSE DATABASE
 //==================================
 mongoose.connect(
-    process.env.MOONGODB_URI || "mongodb://localhost/lifegame",
+    process.env.MOONGODB_URI || "mongodb://username:password54321@ds151066.mlab.com:51066/heroku_5zfb8klb",
     {
         useCreateIndex: true,
         useNewUrlParser: true,
