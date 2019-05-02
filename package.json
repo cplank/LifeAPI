@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/cplank/LifeAPI/issues"
   },
-  "homepage": "https://github.com/cplank/LifeAPI#readme"
+  "homepage": "https://github.com/cplank/LifeAPI#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "socket.io": "^2.2.0"
+  }
 }
