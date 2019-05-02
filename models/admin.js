@@ -6,4 +6,8 @@ const adminSchema = new Schema({
     orgName: String,
     password: String,
     email: String
-})
+});
+
+const Admin = mongoose.model("Admin", adminSchema);
+
+module.exports = Admin;
