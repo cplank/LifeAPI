@@ -21,6 +21,12 @@ app.get('/', function (req, res) {
   res.sendfile('index.html');
 });
 
+//If running a test, set syncOptions.force to true
+//clearing the 'testdb'
+if (process.env.NODE_ENV === "test") {
+  syncOptions.force = true;
+};
+
 io.on('connection', function (socket) {
   console.log('A user connected');
 
