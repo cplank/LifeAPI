@@ -1,6 +1,5 @@
 require("dotenv").config();
 var express = require("express");
-var exphbs = require("express-handlebars");
 
 var app = express();
 var PORT = process.env.PORT || 3000;
@@ -14,7 +13,7 @@ app.use(express.json());
 app.use(express.static("public"));
 
 app.get('/', function(req, res) {
-  res.sendfile('index.html');
+  res.send('What up');
 });
 
 // If running a test, set syncOptions.force to true
@@ -32,5 +31,5 @@ io.on('connection', function(socket) {
 });
 
 http.listen(PORT, function() {
-  console.log('listening on localhost:', PORT);
+  console.log('listening on localhost:'+PORT);
 });
