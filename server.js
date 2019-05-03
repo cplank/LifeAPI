@@ -21,9 +21,9 @@ app.use(express.static("public"));
 app.use(routes);
 
 //Will we need this when we deploy - if in this is where to serve files from
-if (process.env.NODE_ENV === "production") {
-    app.use(express.static("client/build"))
-}
+// if (process.env.NODE_ENV === "production") {
+//     app.use(express.static("client/build"))
+// }
 
 // If running a test, set syncOptions.force to true
 // clearing the `testdb`
