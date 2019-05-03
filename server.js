@@ -1,25 +1,29 @@
-require("dotenv").config();
+//Dependencies
+//==========================================
+// require("dotenv").config();
 var express = require("express");
 
+var routes = require("./routes");
 var app = express();
+const db = require("./models");
+const mongoose = require("mongoose");
+
 var PORT = process.env.PORT || 3001;
 
 var http = require("http").Server(app);
-var io = require("socket.io")(http);
+// var io = require("socket.io")(http);
 
 // Middleware
+//==========================================
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(express.static("public"));
 
-app.get('/', function (req, res) {
-  res.send('What up');
-});
+app.use(routes);
 
-// If running a test, set syncOptions.force to true
-// clearing the `testdb`
-if (process.env.NODE_ENV === "test") {
-  syncOptions.force = true;
+//Will we need this when we deploy - if in this is where to serve files from
+if (process.env.NODE_ENV === "production") {
+    app.use(express.static("client/build"))
 }
 
 io.on('connection', function (socket) {
@@ -47,4 +51,23 @@ io.on('connection', function (socket) {
 
 http.listen(PORT, function () {
   console.log('listening on localhost:' + PORT);
+
+// If running a test, set syncOptions.force to true
+// clearing the `testdb`
+
+
+//MONGOOSE DATABASE
+//==================================
+mongoose.connect(
+    process.env.MOONGODB_URI || "mongodb://username:password54321@ds151066.mlab.com:51066/heroku_5zfb8klb",
+    {
+        useCreateIndex: true,
+        useNewUrlParser: true,
+    }
+)
+
+//START THE SERVER
+//=================================
+http.listen(PORT, function () {
+    console.log('listening on localhost:', PORT);
 });
