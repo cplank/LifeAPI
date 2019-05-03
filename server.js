@@ -11,7 +11,7 @@ const mongoose = require("mongoose");
 var PORT = process.env.PORT || 3001;
 
 var http = require("http").Server(app);
-// var io = require("socket.io")(http);
+var io = require("socket.io")(http);
 
 // Middleware
 //==========================================
@@ -27,30 +27,27 @@ app.use(routes);
 // }
 
 io.on('connection', function (socket) {
-  console.log('A user connected');
+    console.log('A user connected');
 
-  // add the just connected client socket to a game "room"
-  socket.join('game1');
+    // add the just connected client socket to a game "room"
+    socket.join('game1');
 
-  var gameSize = io.nsps['/'].adapter.rooms["game1"].length;
-  console.log("num players in game1:", gameSize)
+    var gameSize = io.nsps['/'].adapter.rooms["game1"].length;
+    console.log("num players in game1:", gameSize)
 
-  // register that the socket has disconnected
-  socket.on('disconnect', function () {
+    // register that the socket has disconnected
+    socket.on('disconnect', function () {
 
-    console.log('A user disconnected');
-    socket.leave("game1");
+        console.log('A user disconnected');
+        socket.leave("game1");
 
-    // Check if game room stil exists. If so, log num players in it, if not then say it's empty
-    var game = io.nsps['/'].adapter.rooms["game1"];
-    game ?
-      console.log("num players in game1:", game.length)
-      : console.log("game1 is empty");
-  });
+        // Check if game room stil exists. If so, log num players in it, if not then say it's empty
+        var game = io.nsps['/'].adapter.rooms["game1"];
+        game ?
+            console.log("num players in game1:", game.length)
+            : console.log("game1 is empty");
+    });
 });
-
-http.listen(PORT, function () {
-  console.log('listening on localhost:' + PORT);
 
 // If running a test, set syncOptions.force to true
 // clearing the `testdb`
@@ -70,4 +67,4 @@ mongoose.connect(
 //=================================
 http.listen(PORT, function () {
     console.log('listening on localhost:', PORT);
-});
+})
