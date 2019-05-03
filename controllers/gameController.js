@@ -3,13 +3,13 @@ const db = require('../models');
 module.exports = {
     findAll: function (req, res) {
         db.Game.find(req.query)
-            .then(dbGame => res.json(dbGame))
+            .then(dbgame => res.json(dbgame))
             .catch(err => res.status(422).json(err));
     },
 
     findById: function (req, res) {
         db.Game.findById(req.query.id)
-            .then(dbGame => res.json(dbGame))
+            .then(dbgame => res.json(dbgame))
             .catch(err => res.status(442).json(err));
     },
     create: function (req, res) {
@@ -26,13 +26,17 @@ module.exports = {
 },
     update: function (req, res) {
         db.Game.findOneAndUpdate({ id: req.params.id }, req.body)
-            .then(dbGame => res.josn(dbGame))
+            .then(dbgame => res.josn(dbgame))
             .catch(err => res.status(422).json(err));
     },
 remove: function (req, res) {
+    //finds book in db by its id
     db.Game.findById(req.params.id)
-        .then(dbGame => dbGame.remove())
-        .then(dbGame => res.json(dbGame))
+        //then deletes the book from db
+        .then(dbgame => dbgame.remove())
+        //same thing but in json form
+        .then(dbgame => res.json(dbgame))
+        //catches error
         .catch(err => res.status(422).json(err));
 }
 };
