@@ -27,14 +27,14 @@ module.exports = {
         db.Game.findOneAndUpdate({ id: req.params.id }, ({
             avatars: { $push: new Avatar(req.body.name, req.body.t1, req.body.t2, req.body.t3, req.body.t4, req.body.t5) }
         }))
-            .then(dbgame => res.josn(dbgame))
+            .then(dbgame => res.json(dbgame))
             .catch(err => res.status(422).json(err));
     },
 
     updateQuestion: function (req, res) {
-        db.Game.findOneAndUpdate({ id: req.params.id }, (
-            
-        ))
+        db.Game.findOneAndUpdate({ id: req.params.id }, ({
+            questions: { $push: new Questions(req.body.q) }
+        }))
     }
     remove: function (req, res) {
         db.Game.findById(req.params.id)
