@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const gameSchema = new Schema({
+    name: String,
     traits: {
         trait1: String,
         trait2: String,
@@ -9,15 +10,15 @@ const gameSchema = new Schema({
         trait4: String,
         trait5: String
     },
-    Avatar: {
+    Avatars: [{
         name: String,
         trait1: Number,
         trait2: Number,
         trait3: Number,
         trait4: Number,
         trait5: Number
-    },
-    Question: {
+    }],
+    Questions: [{
         Q: String,
         responses: [
             { r1: String, oc: [{ trait: String, amount: Number, upDown: String }] },
@@ -28,7 +29,7 @@ const gameSchema = new Schema({
         ],
         trait1: String,
         trait2: String
-    }
+    }]
 });
 
 const Game = mongoose.model("Game", gameSchema);
