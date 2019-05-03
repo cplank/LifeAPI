@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const gameSchema = new Schema({
+    name: String,
     traits: {
         trait1: String,
         trait2: String,
