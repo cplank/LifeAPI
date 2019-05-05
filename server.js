@@ -2,7 +2,7 @@
 //==========================================
 // require("dotenv").config();
 var express = require("express");
-
+const cors = require("cors")
 var routes = require("./routes");
 var app = express();
 const db = require("./models");
@@ -19,6 +19,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(express.static("public"));
 
+const corsOptions = {
+    origin: "*",
+
+}
+app.options("*", cors(corsOptions));
 app.use(routes);
 
 //Will we need this when we deploy - if in this is where to serve files from

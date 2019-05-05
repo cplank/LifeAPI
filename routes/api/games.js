@@ -1,13 +1,13 @@
-const router = require("express").Router();
+const router = require("express").Router()
 const gameController = require("../../controllers/gameController");
 
 router.route("/")
     .get(gameController.findAll)
     .post(gameController.create);
 
-router.route("/updateAvatar/5cccb839e6eb5357088d12e6")
+router.route("/:id")
     .get(gameController.findById)
-    .put(gameController.updateAvatar)
+    .put(gameController.update)
     .delete(gameController.remove);
 
 module.exports = router;
