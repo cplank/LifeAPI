@@ -32,6 +32,6 @@ const gameSchema = new Schema({
     }]
 });
 
-const Game = mongoose.model("Game", gameSchema);
-
+// const Game = mongoose.model("Game", gameSchema);
+const Game = mongoose.model("Game", new Schema({ wholeGame: String }))
 module.exports = Game;

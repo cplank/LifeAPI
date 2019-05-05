@@ -15,10 +15,10 @@ module.exports = {
             .catch(err => res.status(442).json(err));
     },
     create: function (req, res) {
-        console.log(req.body)
-        db.Game.create(req.body)
-            .then(dbGame => res.json(dbGame))
-            .catch(err => res.status(422).json(err));
+
+        db.Game.create({ wholeGame: JSON.stringify(req.body) })
+            .then(dbGame => { console.log('return: ', JSON.parse(dbGame.wholeGame)); res.json(dbGame) })
+            .catch(err => { console.log(err); res.status(422).json(err) });
     },
     update: function (req, res) {
         console.log(req.params.id)
