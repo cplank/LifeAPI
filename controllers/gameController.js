@@ -16,8 +16,8 @@ module.exports = {
     },
     create: function (req, res) {
 
-        db.Game.create({ wholeGame: JSON.stringify(req.body) })
-            .then(dbGame => { console.log('return: ', JSON.parse(dbGame.wholeGame)); res.json(dbGame) })
+        db.Game.create(req.body)
+            .then(dbGame => { console.log('return: ', (dbGame)); res.json(dbGame) })
             .catch(err => { console.log(err); res.status(422).json(err) });
     },
     update: function (req, res) {
