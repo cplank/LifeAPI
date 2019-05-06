@@ -34,7 +34,7 @@ app.use(routes);
 io.on('connection', function (socket) {
     console.log('A user connected');
 
-    socket.on("gameNum", function(game){
+    socket.on("gameNum", function (game) {
         console.log("socket wants to join game:", game);
         socket.join(game);
 
@@ -42,7 +42,7 @@ io.on('connection', function (socket) {
 
         console.log("num players in", game + ":", gameSize)
     })
-    
+
 
 
 
