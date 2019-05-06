@@ -13,6 +13,32 @@ var PORT = process.env.PORT || 3001;
 var http = require("http").Server(app);
 var io = require("socket.io")(http);
 
+//PASSPORT
+
+const bodyParser = require("body-parser");
+const passport = require("passport");
+
+const users = require("./routes/api/users");
+
+
+
+// Bodyparser middleware
+app.use(
+  bodyParser.urlencoded({
+    extended: false
+  })
+);
+app.use(bodyParser.json());
+
+// Passport middleware
+app.use(passport.initialize());
+
+// Passport config
+require("./models/passport")(passport);
+
+// Routes
+app.use("/api/users", users);
+
 // Middleware
 //==========================================
 app.use(express.urlencoded({ extended: false }));

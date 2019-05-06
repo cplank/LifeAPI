@@ -2,10 +2,23 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const adminSchema = new Schema({
-    userName: String,
-    orgName: String,
-    password: String,
-    email: String
+// Create Schema
+  name: {
+    type: String,
+    required: true
+  },
+  email: {
+    type: String,
+    required: true
+  },
+  password: {
+    type: String,
+    required: true
+  },
+  orgname: {
+    type: String,
+    require:true
+  }
 });
 
 const Admin = mongoose.model("Admin", adminSchema);
