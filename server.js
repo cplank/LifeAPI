@@ -34,23 +34,35 @@ app.use(routes);
 io.on('connection', function (socket) {
     console.log('A user connected');
 
-    // add the just connected client socket to a game "room"
-    socket.join('game1');
+    socket.on("gameNum", function(game){
+        console.log("socket wants to join game:", game);
+        socket.join(game);
 
-    var gameSize = io.nsps['/'].adapter.rooms["game1"].length;
-    console.log("num players in game1:", gameSize)
+        let gameSize = io.nsps['/'].adapter.rooms[game].length;
+
+        console.log("num players in", game + ":", gameSize)
+    })
+    
+
+
+
+    // add the just connected client socket to a game "room"
+    // socket.join('game1');
+
+    // var gameSize = io.nsps['/'].adapter.rooms["game1"].length;
+    // console.log("num players in game1:", gameSize)
 
     // register that the socket has disconnected
     socket.on('disconnect', function () {
 
         console.log('A user disconnected');
-        socket.leave("game1");
+        // socket.leave("game1");
 
         // Check if game room stil exists. If so, log num players in it, if not then say it's empty
-        var game = io.nsps['/'].adapter.rooms["game1"];
-        game ?
-            console.log("num players in game1:", game.length)
-            : console.log("game1 is empty");
+        // var game = io.nsps['/'].adapter.rooms["game1"];
+        // game ?
+        //     console.log("num players in game1:", game.length)
+        //     : console.log("game1 is empty");
     });
 });
 
