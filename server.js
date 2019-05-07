@@ -42,32 +42,36 @@ io.on('connection', function (socket) {
         console.log("socket wants to join game:", game);
         socket.join(game);
 
-        let gameSize = io.nsps['/'].adapter.rooms[game].length;
+        let thisGame = io.nsps['/'].adapter.rooms[game];
 
-        console.log("num players in", game + ":", gameSize)
+
+        console.log("num players in", game + ":", thisGame.length)
+
+
+        // If this is the first client to connect to this game, they're the host
+        if (thisGame.length === 1) {
+            console.log("sending host message")
+            socket.emit("host", true)
+        }
+
+        // notify all sockets in this game of the total player count, minus host 
+        socket.to(game).emit("playerCount", thisGame.length-1)
+
+        // register that the socket has disconnected
+        socket.on('disconnect', function () {
+            console.log('A user disconnected');
+
+            // ensure that the host knows the current player count
+            socket.to(game).emit("playerCount", thisGame.length-1)
+
+            // Check if game room stil exists. If so, log num players in it, if not then say it's empty
+            thisGame ?
+                console.log("num players in game", game, ":", thisGame.length)
+                : console.log(game, "is empty");
+        });
     })
 
 
-
-
-    // add the just connected client socket to a game "room"
-    // socket.join('game1');
-
-    // var gameSize = io.nsps['/'].adapter.rooms["game1"].length;
-    // console.log("num players in game1:", gameSize)
-
-    // register that the socket has disconnected
-    socket.on('disconnect', function () {
-
-        console.log('A user disconnected');
-        // socket.leave("game1");
-
-        // Check if game room stil exists. If so, log num players in it, if not then say it's empty
-        // var game = io.nsps['/'].adapter.rooms["game1"];
-        // game ?
-        //     console.log("num players in game1:", game.length)
-        //     : console.log("game1 is empty");
-    });
 });
 
 // If running a test, set syncOptions.force to true
