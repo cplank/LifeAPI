@@ -13,7 +13,7 @@ var PORT = process.env.PORT || 3001;
 var http = require("http").Server(app);
 var io = require("socket.io")(http);
 
-const cors = require("cors");
+// const cors = require("cors");
 
 // Middleware
 //==========================================
