@@ -13,17 +13,21 @@ var PORT = process.env.PORT || 3001;
 var http = require("http").Server(app);
 var io = require("socket.io")(http);
 
+// const cors = require("cors");
+
 // Middleware
 //==========================================
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(express.static("public"));
 
-const corsOptions = {
-    origin: "*",
+// const corsOptions = {
+//     origin: "*",
 
-}
-app.options("*", cors(corsOptions));
+// }
+// app.options("*", cors(corsOptions));
+app.use(cors());
+
 app.use(routes);
 
 //Will we need this when we deploy - if in this is where to serve files from
@@ -40,7 +44,9 @@ io.on('connection', function (socket) {
 
         let thisGame = io.nsps['/'].adapter.rooms[game];
 
+
         console.log("num players in", game + ":", thisGame.length)
+
 
         // If this is the first client to connect to this game, they're the host
         if (thisGame.length === 1) {

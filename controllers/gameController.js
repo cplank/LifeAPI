@@ -1,5 +1,5 @@
 const db = require('../models');
-const { Traits, Avatar, Question, Response, Outcome } = require("../models/constructors")
+
 
 module.exports = {
     findAll: function (req, res) {
