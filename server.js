@@ -5,21 +5,40 @@ var express = require("express");
 const cors = require("cors")
 var routes = require("./routes");
 var app = express();
-const db = require("./models");
-const mongoose = require("mongoose");
+const mongoose = require("mongoose");;
+const morgan = require('morgan');
+const session = require('express-session');
+const passport = require('./passport')
 
 var PORT = process.env.PORT || 3001;
 
 var http = require("http").Server(app);
 var io = require("socket.io")(http);
 
+
+//MONGOOSE DATABASE
+//==================================
+mongoose.connect(
+    process.env.MOONGODB_URI || "mongodb://username:password54321@ds151066.mlab.com:51066/heroku_5zfb8klb",
+    {
+        useCreateIndex: true,
+        useNewUrlParser: true,
+    }
+)
 // const cors = require("cors");
 
 // Middleware
 //==========================================
-app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(express.urlencoded({ extended:true })); //need this to be true for passport
 app.use(express.static("public"));
+app.use(morgan('dev'))
+
+// ===== Passport ====
+app.use(session({secret: "keyboard cat", resave: true, saveUninitialized: true})); //will create a user obj in the req obj
+app.use(passport.initialize())
+app.use(passport.session()) // will call the deserializeUser
+
 
 // const corsOptions = {
 //     origin: "*",
@@ -55,6 +74,7 @@ io.on('connection', function (socket) {
 
         console.log("num players in", game + ":", thisGame.length)
 
+
         // If this is the first client to connect to this game, they're the host
         if (thisGame.length === 1) {
             console.log("sending host message")
@@ -67,6 +87,7 @@ io.on('connection', function (socket) {
         // register that the socket has disconnected
         socket.on('disconnect', function () {
             console.log('A user disconnected');
+
 
             // ensure that the host knows the current player count
             socket.to(game).emit("playerCount", thisGame.length - 1)
@@ -81,17 +102,6 @@ io.on('connection', function (socket) {
 
 // If running a test, set syncOptions.force to true
 // clearing the `testdb`
-
-
-//MONGOOSE DATABASE
-//==================================
-mongoose.connect(
-    process.env.MOONGODB_URI || "mongodb://username:password54321@ds151066.mlab.com:51066/heroku_5zfb8klb",
-    {
-        useCreateIndex: true,
-        useNewUrlParser: true,
-    }
-)
 
 //START THE SERVER
 //=================================
