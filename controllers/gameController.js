@@ -10,7 +10,7 @@ module.exports = {
     },
 
     findById: function (req, res) {
-        db.Game.findById(req.query.id)
+        db.Game.findById(req.params.id)
             .then(dbgame => res.json(dbgame))
             .catch(err => res.status(442).json(err));
     },
