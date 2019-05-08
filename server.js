@@ -38,15 +38,22 @@ app.use(routes);
 io.on('connection', function (socket) {
     console.log('A user connected');
 
+    // trigger game start for all players in a game
+    socket.on("startPlayers", function (game, gameObj) {
+        console.log(`sending gameStart to ${game}`)
+        console.log(gameObj)
+        io.in(game).emit("gameStart", gameObj)
+    })
+
+
     socket.on("gameNum", function (game) {
+
         console.log("socket wants to join game:", game);
         socket.join(game);
 
         let thisGame = io.nsps['/'].adapter.rooms[game];
 
-
         console.log("num players in", game + ":", thisGame.length)
-
 
         // If this is the first client to connect to this game, they're the host
         if (thisGame.length === 1) {
@@ -55,14 +62,14 @@ io.on('connection', function (socket) {
         }
 
         // notify all sockets in this game of the total player count, minus host 
-        socket.to(game).emit("playerCount", thisGame.length-1)
+        socket.to(game).emit("playerCount", thisGame.length - 1)
 
         // register that the socket has disconnected
         socket.on('disconnect', function () {
             console.log('A user disconnected');
 
             // ensure that the host knows the current player count
-            socket.to(game).emit("playerCount", thisGame.length-1)
+            socket.to(game).emit("playerCount", thisGame.length - 1)
 
             // Check if game room stil exists. If so, log num players in it, if not then say it's empty
             thisGame ?
@@ -70,8 +77,6 @@ io.on('connection', function (socket) {
                 : console.log(game, "is empty");
         });
     })
-
-
 });
 
 // If running a test, set syncOptions.force to true
