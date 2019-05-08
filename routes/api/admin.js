@@ -1,11 +1,11 @@
 const express = require('express')
 const router = express.Router()
 const Admin = require('./admin')
-const passport = require('../passport')
+const passport = require('../../passport');
 
 
 // this route is just used to get the Admin basic info
-router.get('/Admin', (req, res, next) => {
+router.get('/admin', (req, res, next) => {
 	console.log('===== Admin!!======')
 	console.log(req.Admin)
 	if (req.Admin) {
@@ -15,22 +15,21 @@ router.get('/Admin', (req, res, next) => {
 	}
 })
 
-router.post(
-	'/login',
-	function(req, res, next) {
-		console.log(req.body)
-		console.log('================')
-		next()
-	},
-	passport.authenticate('local'),
-	(req, res) => {
+router.get('/users', (req, res, next) => {
+	Admin.find({})
+		.then(users => {
+			res.json(users)
+	})
+})
+
+router.post('/login', passport.authenticate('local'), function(req, res) {
 		console.log('POST to /login')
-		const Admin = JSON.parse(JSON.stringify(req.Admin)) // hack
+		const Admin = JSON.parse(JSON.stringify(req.user)) // hack
 		const cleanAdmin = Object.assign({}, Admin)
-		if (cleanAdmin.local) {
-			console.log(`Deleting ${cleanAdmin.local.password}`)
-			delete cleanAdmin.local.password
-		}
+		// if (cleanAdmin.local) {
+		// 	console.log(`Deleting ${cleanAdmin.local.password}`)
+		// 	delete cleanAdmin.local.password
+		// }
 		res.json({ Admin: cleanAdmin })
 	}
 )
@@ -46,18 +45,16 @@ router.post('/logout', (req, res) => {
 })
 
 router.post('/signup', (req, res) => {
-	const { Adminname, password } = req.body
+	const { email } = req.body
 	// ADD VALIDATION
-	Admin.findOne({ 'local.Adminname': Adminname }, (err, AdminMatch) => {
-		if (AdminMatch) {
+
+	Admin.findOne({ 'email': email }, (err, match) => {
+		if (match) {
 			return res.json({
-				error: `Sorry, already a Admin with the Adminname: ${Adminname}`
+				error: `Sorry, already a Admin with the email: ${email}`
 			})
 		}
-		const newAdmin = new Admin({
-			'local.Adminname': Adminname,
-			'local.password': password
-		})
+		const newAdmin = new Admin(req.body)
 		newAdmin.save((err, savedAdmin) => {
 			if (err) return res.json(err)
 			return res.json(savedAdmin)

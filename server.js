@@ -5,11 +5,9 @@ var express = require("express");
 const cors = require("cors")
 var routes = require("./routes");
 var app = express();
-const db = require("./models");
 const mongoose = require("mongoose");;
 const morgan = require('morgan');
 const session = require('express-session');
-// const MongoStore = require('connect-mongo')(session);
 const passport = require('./passport')
 
 var PORT = process.env.PORT || 3001;
@@ -17,42 +15,32 @@ var PORT = process.env.PORT || 3001;
 var http = require("http").Server(app);
 var io = require("socket.io")(http);
 
-// ===== Passport ====
-app.use(passport.initialize())
-app.use(passport.session()) // will call the deserializeUser
-
-// // ==== if its production environment!
-// if (process.env.NODE_ENV === 'production') {
-// 	const path = require('path')
-// 	console.log('YOU ARE IN THE PRODUCTION ENV')
-// 	app.use('/static', express.static(path.join(__dirname, '../build/static')))
-// 	app.get('/', (req, res) => {
-// 		res.sendFile(path.join(__dirname, '../build/'))
-// 	})
-// }
-
-/* Express app ROUTING */
-app.use('/auth', require('./models/admin'))
+//MONGOOSE DATABASE
+//==================================
+mongoose.connect(
+    process.env.MOONGODB_URI || "mongodb://username:password54321@ds151066.mlab.com:51066/heroku_5zfb8klb",
+    {
+        useCreateIndex: true,
+        useNewUrlParser: true,
+    }
+)
 
 // Middleware
 //==========================================
-app.use(express.urlencoded({ extended:true })); //need this to be true for passport
 app.use(express.json());
+app.use(express.urlencoded({ extended:true })); //need this to be true for passport
 app.use(express.static("public"));
 app.use(morgan('dev'))
-// app.use(
-// 	session({
-// 		secret: process.env.APP_SECRET || 'this is the default passphrase',
-// 		store: new MongoStore({ mongooseConnection: dbConnection }),
-// 		resave: false,
-// 		saveUninitialized: false
-// 	})
-// )
+
+// ===== Passport ====
+app.use(session({secret: "keyboard cat", resave: true, saveUninitialized: true})); //will create a user obj in the req obj
+app.use(passport.initialize())
+app.use(passport.session()) // will call the deserializeUser
 
 const corsOptions = {
     origin: "*",
-
 }
+
 app.options("*", cors(corsOptions));
 app.use(routes);
 
@@ -72,9 +60,6 @@ io.on('connection', function (socket) {
 
         console.log("num players in", game + ":", gameSize)
     })
-
-
-
 
     // add the just connected client socket to a game "room"
     // socket.join('game1');
@@ -98,17 +83,6 @@ io.on('connection', function (socket) {
 
 // If running a test, set syncOptions.force to true
 // clearing the `testdb`
-
-
-//MONGOOSE DATABASE
-//==================================
-mongoose.connect(
-    process.env.MOONGODB_URI || "mongodb://username:password54321@ds151066.mlab.com:51066/heroku_5zfb8klb",
-    {
-        useCreateIndex: true,
-        useNewUrlParser: true,
-    }
-)
 
 //START THE SERVER
 //=================================

@@ -1,9 +1,9 @@
 const path = require("path")
 const router = require("express").Router()
 const gameRoutes = require("./games")
-// const loginRoute = require('../models/auth')
+const loginRoute = require("./admin")
 
 router.use("/games", gameRoutes)
-// router.use('/auth', loginRoute)
+router.use("/admin", loginRoute)
 
 module.exports = router;
