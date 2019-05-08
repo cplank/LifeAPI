@@ -23,9 +23,6 @@ router.get('/users', (req, res, next) => {
 })
 
 router.post('/login', passport.authenticate('local'), function(req, res) {
-    let o = {};
-    o.o = 0;
-    var cache = [];
     console.log('POST to /login')
     const Admin = JSON.parse(JSON.stringify(req.user)) // hack
     const cleanAdmin = Object.assign({}, Admin)
@@ -43,7 +40,7 @@ router.post('/logout', (req, res) => {
 		res.clearCookie('connect.sid') // clean up!
 		return res.json({ msg: 'logging you out' })
 	} else {
-		return res.json({ msg: 'no db.Admin to log out!' })
+		return res.json({ msg: 'no Admin to log out!' })
 	}
 })
 
@@ -54,7 +51,7 @@ router.post('/signup', (req, res) => {
 	db.Admin.findOne({ 'email': email }, (err, match) => {
 		if (match) {
 			return res.json({
-				error: `Sorry, already a db.Admin with the email: ${email}`
+				error: `Sorry, email is already taken: ${email}`
 			})
 		}
 		const newAdmin = new db.Admin(req.body)
