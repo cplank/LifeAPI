@@ -16,7 +16,7 @@ router.get('/admin', (req, res, next) => {
 })
 
 router.get('/users', (req, res, next) => {
-	db.Admin.find({})
+	db.Admin.find({}).populate('games')
 		.then(users => {
 			res.json(users)
 	})
