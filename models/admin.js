@@ -4,14 +4,14 @@ const bcrypt = require('bcryptjs')
 mongoose.promise = Promise
 
 const adminSchema = new Schema({
+	_id: Schema.Types.ObjectId,
+	firstName: { type: String, unique: false },
+	lastName: { type: String, unique: false },
+	email: { type: String, unique: false, required: true },
+	password: { type: String, unique: false, required: true },
+	games:[{type: Schema.Types.ObjectId, ref: 'Game'}],
+	orgName: { type: String, unique: false, required:true }
 	
-		firstName: { type: String, unique: false },
-		lastName: { type: String, unique: false },
-		email: { type: String, unique: false, required: true },
-		password: { type: String, unique: false, required: true },
-		orgName: { type: String, unique: false, required:true}
-	
-   
 });
 
 adminSchema.methods = {

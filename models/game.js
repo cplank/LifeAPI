@@ -50,6 +50,7 @@ const gameSchema = new Schema({
     traits: traitsSchema,
     avatars: [avatarSchema],
     questions: [questionSchema],
+    user:[{type: Schema.Types.ObjectId, ref: 'Game'}],
 })
 
 const Game = mongoose.model("Game", gameSchema);
