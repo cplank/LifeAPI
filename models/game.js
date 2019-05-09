@@ -23,6 +23,7 @@ const avatarSchema = new Schema({
     { _id: false });
 
 const outcomeSchema = new Schema({
+    text: String,
     trait: String,
     amount: Number,
     upDown: String
