@@ -30,12 +30,12 @@ mongoose.connect(
 // Middleware
 //==========================================
 app.use(express.json());
-app.use(express.urlencoded({ extended:true })); //need this to be true for passport
+app.use(express.urlencoded({ extended: true })); //need this to be true for passport
 app.use(express.static("public"));
 app.use(morgan('dev'))
 
 // ===== Passport ====
-app.use(session({secret: "keyboard cat", resave: true, saveUninitialized: true})); //will create a user obj in the req obj
+app.use(session({ secret: "keyboard cat", resave: true, saveUninitialized: true })); //will create a user obj in the req obj
 app.use(passport.initialize())
 app.use(passport.session()) // will call the deserializeUser
 
@@ -54,6 +54,8 @@ app.use(routes);
 //     app.use(express.static("client/build"))
 // }
 
+let choices = 0;
+
 io.on('connection', function (socket) {
     console.log('A user connected');
 
@@ -64,6 +66,18 @@ io.on('connection', function (socket) {
         io.in(game).emit("gameStart", gameObj)
     })
 
+    // Listener for player making a choice
+    socket.on("choiceMade", (game) => {
+        let thisGame = io.nsps['/'].adapter.rooms[game];
+        choices++;
+        console.log(`${socket.id} made a choice`);
+        console.log(`choices made: ${choices}`);
+        console.log("numPlayers:", thisGame.length -1);
+        if (choices === thisGame.length -1) {
+            io.in(game).emit("showResult")
+            choices = 0;
+        }
+    })
 
     socket.on("gameNum", function (game) {
 
@@ -81,8 +95,9 @@ io.on('connection', function (socket) {
             socket.emit("host", true)
         }
 
+        let numPlayers = thisGame.length - 1;
         // notify all sockets in this game of the total player count, minus host 
-        socket.to(game).emit("playerCount", thisGame.length - 1)
+        socket.to(game).emit("playerCount", numPlayers)
 
         // register that the socket has disconnected
         socket.on('disconnect', function () {
