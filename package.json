@@ -1,0 +1,37 @@
+{
+  "name": "lifeapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cplank/LifeAPI.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cplank/LifeAPI/issues"
+  },
+  "homepage": "https://github.com/cplank/LifeAPI#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "bcryptjs": "^2.4.3",
+    "bootstrap": "^4.3.1",
+    "connect-mongo": "^2.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^7.0.0",
+    "express": "^4.16.4",
+    "express-session": "^1.16.1",
+    "mongoose": "^5.5.5",
+    "morgan": "^1.9.1",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "react-bootstrap": "^1.0.0-beta.8",
+    "routes": "^2.1.0",
+    "socket.io": "^2.2.0"
+  }
+}
