@@ -72,8 +72,8 @@ io.on('connection', function (socket) {
         choices++;
         console.log(`${socket.id} made a choice`);
         console.log(`choices made: ${choices}`);
-        console.log("numPlayers:", thisGame.length -1);
-        if (choices === thisGame.length -1) {
+        console.log("numPlayers:", thisGame.length - 1);
+        if (choices === thisGame.length - 1) {
             io.in(game).emit("showResult")
             choices = 0;
         }
