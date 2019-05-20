@@ -110,12 +110,19 @@ io.on('connection', function (socket) {
         socket.on('disconnect', function () {
             console.log('A user disconnected');
 
+            choices.forEach((e, i) => {
+                if (e.game === game) {
+                    console.log(`choice.length: ${choices.length}`)
+                    choices.splice(i, 1)
+                    console.log(`choice.length after splice: ${choices.length}`)
+                }
+            })
 
             // ensure that the host knows the current player count
             socket.to(game).emit("playerCount", thisGame.length - 1)
 
             // Check if game room stil exists. If so, log num players in it, if not then say it's empty
-            thisGame ?
+            thisGame.length ?
                 console.log("num players in game", game, ":", thisGame.length)
                 : console.log(game, "is empty");
         });
