@@ -68,6 +68,7 @@ io.on('connection', function (socket) {
     // Listener for player making a choice
     socket.on("choiceMade", (game) => {
         let thisGame = io.nsps['/'].adapter.rooms[game];
+      
         // choices++;
         choices.forEach((e) => {
             console.log(`e.game: ${e.game}`)
@@ -84,6 +85,7 @@ io.on('connection', function (socket) {
                 }
             }
         })
+
     })
 
     socket.on("gameNum", function (game) {
