@@ -13,6 +13,7 @@ const traitsSchema = new Schema({
 
 const avatarSchema = new Schema({
     name: String,
+    picture: String,
     trait1: Number,
     trait2: Number,
     trait3: Number,
@@ -50,7 +51,7 @@ const gameSchema = new Schema({
     traits: traitsSchema,
     avatars: [avatarSchema],
     questions: [questionSchema],
-    user:[{type: Schema.Types.ObjectId, ref: 'Game'}],
+    user: [{ type: Schema.Types.ObjectId, ref: 'Game' }],
 })
 
 const Game = mongoose.model("Game", gameSchema);
