@@ -38,7 +38,8 @@ router.post('/logout', (req, res) => {
 	if (req.Admin) {
 		req.session.destroy()
 		res.clearCookie('connect.sid') // clean up!
-		return res.json({ msg: 'logging you out' })
+		return res.json({ msg: 'logging you out' });
+		res.redirect('/');
 	} else {
 		return res.json({ msg: 'no Admin to log out!' })
 	}
