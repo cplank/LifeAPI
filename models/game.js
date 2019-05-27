@@ -18,7 +18,8 @@ const avatarSchema = new Schema({
     trait2: Number,
     trait3: Number,
     trait4: Number,
-    trait5: Number
+    trait5: Number,
+    tracking: [Number]
 
 },
     { _id: false });
