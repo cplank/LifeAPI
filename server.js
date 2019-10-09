@@ -53,11 +53,10 @@ app.use(routes);
 // if (process.env.NODE_ENV === "production") {
 //     app.use(express.static("client/build"))
 // }
-
-let choices = 0;
-
+let choices = [];
 io.on('connection', function (socket) {
     console.log('A user connected');
+
 
     // trigger game start for all players in a game
     socket.on("startPlayers", function (game, gameObj) {
@@ -69,14 +68,24 @@ io.on('connection', function (socket) {
     // Listener for player making a choice
     socket.on("choiceMade", (game) => {
         let thisGame = io.nsps['/'].adapter.rooms[game];
-        choices++;
-        console.log(`${socket.id} made a choice`);
-        console.log(`choices made: ${choices}`);
-        console.log("numPlayers:", thisGame.length - 1);
-        if (choices === thisGame.length - 1) {
-            io.in(game).emit("showResult")
-            choices = 0;
-        }
+      
+        // choices++;
+        choices.forEach((e) => {
+            console.log(`e.game: ${e.game}`)
+            if (e.game === game) {
+                e.numChoices++;
+                console.log(e);
+                console.log(`${socket.id} made a choice`);
+                console.log(`choices made: ${e.numChoices}`);
+                console.log("numPlayers:", thisGame.length - 1);
+
+                if (e.numChoices === thisGame.length - 1) {
+                    io.in(game).emit("showResult")
+                    e.numChoices = 0;
+                }
+            }
+        })
+
     })
 
     socket.on("gameNum", function (game) {
@@ -88,11 +97,11 @@ io.on('connection', function (socket) {
 
         console.log("num players in", game + ":", thisGame.length)
 
-
         // If this is the first client to connect to this game, they're the host
         if (thisGame.length === 1) {
-            console.log("sending host message")
-            socket.emit("host", true)
+            console.log("sending host message");
+            socket.emit("host", true);
+            choices.push({ game: game, numChoices: 0 })
         }
 
         let numPlayers = thisGame.length - 1;
@@ -103,12 +112,19 @@ io.on('connection', function (socket) {
         socket.on('disconnect', function () {
             console.log('A user disconnected');
 
+            choices.forEach((e, i) => {
+                if (e.game === game) {
+                    console.log(`choice.length: ${choices.length}`)
+                    choices.splice(i, 1)
+                    console.log(`choice.length after splice: ${choices.length}`)
+                }
+            })
 
             // ensure that the host knows the current player count
             socket.to(game).emit("playerCount", thisGame.length - 1)
 
             // Check if game room stil exists. If so, log num players in it, if not then say it's empty
-            thisGame ?
+            thisGame.length ?
                 console.log("num players in game", game, ":", thisGame.length)
                 : console.log(game, "is empty");
         });
